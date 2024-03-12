@@ -4,6 +4,9 @@ import backend.likelion.todos.common.ForbiddenException;
 import backend.likelion.todos.common.NotFoundException;
 import backend.likelion.todos.member.Member;
 import backend.likelion.todos.member.MemberRepository;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,6 +62,12 @@ public class GoalService {
     public List<GoalResponse> findAllByMemberId(Long memberId) {
         // TODO [2단계] memberId를 사용하여 모든 목표를 조회하세요.
         // TODO [2단계] 조회된 목표 리스트를 GoalResponse 리스트로 변환하여 반환하세요.
-        return null;
+        List<Goal> goalList = goalRepository.findAllByMemberId(memberId);
+        List<GoalResponse> goalResponseList = new LinkedList<>();
+
+        for(int i = 0;i<goalList.size();i++){
+            goalResponseList.add(new GoalResponse(goalList.get(i).getId(),goalList.get(i).getName(),goalList.get(i).getColor()));
+        }
+        return goalResponseList;
     }
 }
