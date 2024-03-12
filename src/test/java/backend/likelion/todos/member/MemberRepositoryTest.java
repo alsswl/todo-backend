@@ -100,6 +100,7 @@ class MemberRepositoryTest {
 
         // when
         memberRepository.clear();
+        System.out.println(memberRepository.findById(member.getId()));
 
         // then
         assertThat(memberRepository.findById(member.getId())).isEmpty();
