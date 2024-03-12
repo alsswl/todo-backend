@@ -24,6 +24,22 @@ public class Goal {
         this.id = id;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     // 주어진 멤버가 현재 멤버와 동일한지 검증하고, 아니라면 ForbiddenException을 발생시킵니다.
     public void validateMember(Member member) {
         if(this.member != member){
