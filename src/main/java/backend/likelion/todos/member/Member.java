@@ -4,7 +4,7 @@ import backend.likelion.todos.common.UnAuthorizedException;
 import lombok.Getter;
 
 @Getter
-public class Member {
+public class    Member {
 
     private Long id;
     private String username;
