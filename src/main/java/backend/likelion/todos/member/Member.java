@@ -23,6 +23,10 @@ public class Member {
         this.id = id;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
     public void login(String password) {
         if (this.password.equals(password)) {
             return;

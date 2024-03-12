@@ -22,6 +22,10 @@ public class Goal {
         this.id = id;
     }
 
+    public Member getMember() {
+        return this.member;
+    }
+
     public void validateMember(Member member) {
         if (!this.member.equals(member)) {
             throw new ForbiddenException("해당 목표에 대한 권한이 없습니다.");
