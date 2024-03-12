@@ -11,6 +11,7 @@ public class Goal {
     private Long id;
     private String name;
     private String color;
+    @Getter
     private Member member;
 
     public Goal(String name, String color, Member member) {
@@ -35,4 +36,5 @@ public class Goal {
         this.name = name;
         this.color = color;
     }
+
 }
