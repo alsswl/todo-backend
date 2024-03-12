@@ -43,10 +43,16 @@ public class GoalService {
 
     // 목표를 삭제합니다.
     public void delete(Long goalId, Long memberId) {
-        // TODO [2단계] memberId를 사용하여 회원 정보를 조회하고, 없으면 "회원 정보가 없습니다." 메시지와 함께 NotFoundException을 발생시키세요.
-        // TODO [2단계] goalId를 사용하여 목표 정보를 조회하고, 없으면 "목표 정보가 없습니다." 메시지와 함께 NotFoundException을 발생시키세요.
-        // TODO [2단계] 조회한 목표가 주어진 회원의 것인지 검증하세요.
-        // TODO [2단계] goalRepository에서 해당 목표를 삭제하세요.
+        if(memberRepository.findById(memberId).isEmpty()){
+            throw new NotFoundException("회원 정보가 없습니다.");
+        }
+        if(goalRepository.findById(goalId).isEmpty()){
+            throw new NotFoundException("목표 정보가 없습니다.");
+        }
+        if(!Objects.equals((goalRepository.findById(goalId).get()).getMember().getId(), memberId)){
+            throw new ForbiddenException("해당 목표에 대한 권한이 없습니다.");
+        }
+        goalRepository.delete(goalRepository.findById(goalId).get());
     }
 
     // 특정 회원 ID에 속하는 모든 목표를 조회하여 GoalResponse 리스트로 반환합니다.
