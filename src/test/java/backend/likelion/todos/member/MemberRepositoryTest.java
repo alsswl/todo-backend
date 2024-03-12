@@ -52,7 +52,7 @@ class MemberRepositoryTest {
 
             // then
             assertThat(found).isPresent();
-            assertThat(found.get().getUsername()).isEqualTo("u");
+            assertThat(found.get().getUserName()).isEqualTo("u");
         }
 
         @Test
@@ -79,7 +79,7 @@ class MemberRepositoryTest {
 
             // then
             assertThat(found).isPresent();
-            assertThat(found.get().getUsername()).isEqualTo("u");
+            assertThat(found.get().getUserName()).isEqualTo("u");
         }
 
         @Test

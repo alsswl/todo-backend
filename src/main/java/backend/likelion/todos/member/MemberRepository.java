@@ -35,7 +35,12 @@ public class MemberRepository {
     public Optional<Member> findByUsername(String username) {
         // TODO [1단계] members 맵에서 username이 일치하는 멤버를 스트림을 사용해 찾으세요.
         // TODO [1단계] 찾은 멤버를 Optional로 감싸서 반환하세요.
-        return null;
+        Optional<Member> findMember =
+        members.values()
+                .stream()
+                .filter(member -> member.getUserName().equals(username))
+                .findFirst();
+        return findMember;
     }
 
     // 저장소의 모든 멤버를 제거합니다.
