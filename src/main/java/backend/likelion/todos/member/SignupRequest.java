@@ -18,4 +18,20 @@ public class SignupRequest {
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
 }
