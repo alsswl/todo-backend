@@ -55,4 +55,16 @@ public class Todo {
         // TODO [3단계] 이 객체의 isCompleted를 false로 설정하세요.
         this.isCompleted = false;
     }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setCompleted(boolean b) {
+        this.isCompleted = b;
+    }
 }
