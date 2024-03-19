@@ -8,7 +8,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import java.util.Date;
+
+import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+
+
 
 @Service
 public class JwtService {
@@ -25,9 +33,26 @@ public class JwtService {
     // 회원 ID를 기반으로 JWT 토큰을 생성합니다.
     public String createToken(Long memberId) {
         // TODO [5단계] 현재 시간과 설정된 만료 시간을 사용하여 만료 날짜를 설정하세요.
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
+        Date exp = new Date(nowMillis + 3600000);
         // TODO [5단계] memberId를 클레임으로 추가하세요.
+        Claims claims = Jwts.claims();
+        claims.put("userId", memberId);
         // TODO [5단계] 설정된 알고리즘으로 토큰을 서명하고 반환하세요.
-        return null;
+
+        String jwt = Jwts.builder()
+                .setSubject("likelion_김민지")
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(key,SignatureAlgorithm.HS256)
+                .setClaims(claims)
+                .compact();
+
+        return jwt;
     }
 
     // 토큰에서 회원 ID를 추출합니다.
