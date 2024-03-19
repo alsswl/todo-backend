@@ -24,6 +24,8 @@ public class JwtService {
     private final long accessTokenExpirationDayToMills;
     private final Algorithm algorithm;
 
+    private Key key;
+
     public JwtService(JwtProperty jwtProperty) {
         this.accessTokenExpirationDayToMills =
                 MILLISECONDS.convert(jwtProperty.accessTokenExpirationDay(), DAYS);
@@ -33,7 +35,7 @@ public class JwtService {
     // 회원 ID를 기반으로 JWT 토큰을 생성합니다.
     public String createToken(Long memberId) {
         // TODO [5단계] 현재 시간과 설정된 만료 시간을 사용하여 만료 날짜를 설정하세요.
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
@@ -41,7 +43,7 @@ public class JwtService {
         Date exp = new Date(nowMillis + 3600000);
         // TODO [5단계] memberId를 클레임으로 추가하세요.
         Claims claims = Jwts.claims();
-        claims.put("userId", memberId);
+        claims.put("userId", Long.toString(memberId));
         // TODO [5단계] 설정된 알고리즘으로 토큰을 서명하고 반환하세요.
 
         String jwt = Jwts.builder()
@@ -58,6 +60,17 @@ public class JwtService {
     // 토큰에서 회원 ID를 추출합니다.
     public Long extractMemberId(String token) {
         // TODO [5단계] 알고리즘을 사용해 토큰의 유효성을 검증하고, "memberId" 클레임에서 회원 ID를 추출하세요. 유효하지 않은 경우 "유효하지 않은 토큰입니다." 메시지와 함께 UnAuthorizedException을 발생시키세요.
-        return null;
+        try{
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return  Long.parseLong(claims.get("userId").toString());
+        }
+        catch(Exception e){
+            throw new UnAuthorizedException("유효하지 않은 토큰입니다.");
+        }
     }
 }
