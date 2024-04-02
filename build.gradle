@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.4.0'
 
     compileOnly 'org.projectlombok:lombok'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured'
