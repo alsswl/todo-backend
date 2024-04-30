@@ -6,6 +6,7 @@ import backend.likelion.todos.member.Member;
 import backend.likelion.todos.member.MemberRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,14 +46,27 @@ public class GoalService {
 
     public void delete(Long goalId, Long memberId) {
         // TODO [8단계] memberId로 회원을 조회하고, 조회에 실패하면 "회원 정보가 없습니다." 예외를 발생시키세요.
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NotFoundException("회원 정보가 없습니다."));
         // TODO [8단계] goalId로 목표(Goal)를 조회하고, 조회에 실패하면 "목표 정보가 없습니다." 예외를 발생시키세요.
+        Goal goal = goalRepository.findById(goalId)
+                .orElseThrow(() -> new NotFoundException("목표 정보가 없습니다."));
         // TODO [8단계] 조회된 Goal의 회원 정보가 입력된 memberId와 일치하는지 검증하세요.
-        // TODO [8단계] 검증이 완료되면 Goal을 goalRepository에서 삭제하세요.
+        if (member.getId() != goal.getMember().getId()) {
+            throw new ForbiddenException("해당 목표에 대한 권한이 없습니다.");
+            // TODO [8단계] 검증이 완료되면 Goal을 goalRepository에서 삭제하세요.
+        }
+        goalRepository.delete(goal);
     }
 
     public List<GoalResponse> findAllByMemberId(Long memberId) {
         // TODO [8단계] memberId로 모든 목표(Goal)를 조회하세요.
+        List<Goal> goals = goalRepository.findAllByMemberId(memberId);
         // TODO [8단계] 조회된 Goal들을 GoalResponse 리스트로 변환하여 반환하세요.
-        return null;
+        List<GoalResponse> responses = goals.stream()
+                .map(goal -> new GoalResponse(goal.getId(), goal.getName(), goal.getColor()))
+                .collect(Collectors.toList());
+
+        return responses;
     }
 }
