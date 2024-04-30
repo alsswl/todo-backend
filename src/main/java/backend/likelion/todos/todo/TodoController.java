@@ -39,6 +39,7 @@ public class TodoController {
             @PathVariable("id") Long todoId
     ) {
         // TODO [9단계] todoId와 memberId를 todoService의 check 메소드에 전달하여 Todo를 완료 상태로 변경하세요.
+        todoService.check(todoId,memberId);
     }
 
     @PostMapping("/{id}/uncheck")
