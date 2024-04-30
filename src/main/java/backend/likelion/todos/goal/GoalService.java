@@ -1,9 +1,12 @@
 package backend.likelion.todos.goal;
 
+import backend.likelion.todos.common.ForbiddenException;
 import backend.likelion.todos.common.NotFoundException;
 import backend.likelion.todos.member.Member;
 import backend.likelion.todos.member.MemberRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +19,28 @@ public class GoalService {
 
     public Long save(String name, String color, Long memberId) {
         // TODO [8단계] memberId로 회원을 조회하고, 조회에 실패하면 "회원 정보가 없습니다." 예외를 발생시키세요.
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() ->new NotFoundException("회원 정보가 없습니다."));
         // TODO [8단계] 조회된 회원 정보를 사용하여 새 Goal 객체를 생성하세요.
+        Goal newGoal = new Goal(name,color,member);
         // TODO [8단계] 생성된 Goal 객체를 goalRepository에 저장하고, 저장된 Goal의 ID를 반환하세요.
-        return null;
+        goalRepository.save(newGoal);
+        return newGoal.getId();
     }
 
     public void update(Long goalId, String name, String color, Long memberId) {
         // TODO [8단계] memberId로 회원을 조회하고, 조회에 실패하면 "회원 정보가 없습니다." 예외를 발생시키세요.
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() ->new NotFoundException("회원 정보가 없습니다."));
         // TODO [8단계] goalId로 목표(Goal)를 조회하고, 조회에 실패하면 "목표 정보가 없습니다." 예외를 발생시키세요.
+        Goal goal = goalRepository.findById(goalId)
+                .orElseThrow(() ->new NotFoundException("목표 정보가 없습니다."));
         // TODO [8단계] 조회된 Goal의 회원 정보가 입력된 memberId와 일치하는지 검증하세요.
+        if(member.getId() != goal.getMember().getId()){
+            throw new ForbiddenException("해당 목표에 대한 권한이 없습니다.");
+        }
         // TODO [8단계] Goal 객체의 정보를 새로운 name과 color로 업데이트하세요.
+        goal.update(name,color);
     }
 
     public void delete(Long goalId, Long memberId) {

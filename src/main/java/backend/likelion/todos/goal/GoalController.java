@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RequiredArgsConstructor
 @RequestMapping("/goals")
@@ -27,7 +28,17 @@ public class GoalController {
             @RequestBody GoalCreateRequest request
     ) {
         // TODO [8단계] GoalCreateRequest에서 이름과 색상을 추출하여 goalService의 save 메소드를 호출하고, 생성된 Goal의 ID로 URI를 생성하여 ResponseEntity를 반환하세요.
-        return null;
+        String name = request.getName();
+        String color = request.getColor();
+
+        Long goalId = goalService.save(name, color, memberId);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(goalId)
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
