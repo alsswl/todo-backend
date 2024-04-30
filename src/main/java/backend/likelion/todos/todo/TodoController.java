@@ -4,6 +4,8 @@ import backend.likelion.todos.auth.Auth;
 import java.net.URI;
 import java.time.YearMonth;
 import java.util.List;
+
+import backend.likelion.todos.goal.GoalResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -58,6 +60,7 @@ public class TodoController {
             @RequestBody TodoUpdateRequest request
     ) {
         // TODO [9단계] TodoUpdateRequest에서 content, date를 추출하고, todoId와 memberId를 함께 todoService의 update 메소드에 전달하여 Todo 정보를 업데이트하세요.
+        todoService.update(todoId,memberId, request.content(), request.date());
     }
 
     @DeleteMapping("/{id}")
@@ -66,6 +69,7 @@ public class TodoController {
             @PathVariable("id") Long todoId
     ) {
         // TODO [9단계] todoId와 memberId를 todoService의 delete 메소드에 전달하여 Todo를 삭제하세요.
+        todoService.delete(memberId, todoId);
     }
 
     @GetMapping("/my")
@@ -75,6 +79,7 @@ public class TodoController {
             @RequestParam(value = "month", required = true) int month
     ) {
         // TODO [9단계] memberId와 YearMonth.of(year, month)를 todoService의 findAllByMemberIdAndDate 메소드에 전달하여 해당 기간의 모든 Todo를 조회하고, 조회된 정보를 ResponseEntity.ok()에 담아 반환하세요.
-        return null;
+        List<TodoWithDayResponse> todos = todoService.findAllByMemberIdAndDate(memberId,YearMonth.of(year, month));
+        return ResponseEntity.ok(todos);
     }
 }
